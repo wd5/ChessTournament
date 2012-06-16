@@ -1,6 +1,6 @@
 <ul class="breadcrumb">
     <li class="active">
-        <a class="chtour-players" href="#">Players</a>
+        <a class="chtour-players" href="#players">Players</a>
     </li>
 </ul>
 <div class="container" style="text-align: center;">
@@ -10,9 +10,9 @@
             <tbody>
                 {% for player in players %}
                     <tr class="chtour-player" data-player-id="{{player.id}}">
-                        <th>{{forloop.counter}}</th>
-                        <th>{{player.name}}</th>
-                        <th>{{player.rank}}</th>
+                        <th class="chtour-no-large">{{forloop.counter}}</th>
+                        <th class="chtour-player-name">{{player.name}}</th>
+                        <th class="chtour-player-rank">{{player.rank}}</th>
                     </tr>
                 {% endfor %}
             </tbody>

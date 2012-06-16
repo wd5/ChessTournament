@@ -1,6 +1,6 @@
 <ul class="breadcrumb">
     <li class="active">
-        <a class="chtour-tounrnaments" href="#">Tournaments</a>
+        <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
     </li>
 </ul>
 <div class="container" style="text-align: center;">
@@ -10,9 +10,9 @@
             <tbody>
                 {% for tournament in tournaments %}
                     <tr class="chtour-tounrnament" data-tournament-id="{{tournament.id}}">
-                        <th>{{forloop.counter}}</th>
-                        <th>{{tournament.name}}</th>
-                        <th>{{tournament.startDate}}</th>
+                        <th class="chtour-no-large">{{forloop.counter}}</th>
+                        <th class="chtour-tournament-name">{{tournament.name}}</th>
+                        <th class="chtour-tournament-date">{{tournament.start_date}}</th>
                     </tr>
                 {% endfor %}
             </tbody>

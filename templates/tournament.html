@@ -1,10 +1,10 @@
 <ul class="breadcrumb">
     <li>
-        <a class="chtour-tounrnaments" href="#">Tournaments</a>
+        <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
         <span class="divider">/</span>
     </li>
     <li class="active">
-        <a href="#">{{tournament.name}}</a>
+        <a href="#tournaments/{{tournament.name}}">{{tournament.name}}</a>
     </li>
 </ul>
 <div class="container" style="text-align: center;">
@@ -16,12 +16,12 @@
             <table class="table table-striped">
                 <tbody>
                     {% for game in round.games %}
-                        <tr>
-                            <th>{{forloop.counter}}</th>
-                            <th>{{game.playing_white_player}}</th>
-                            <th>{{game.result}}</th>
-                            <th>{{game.playing_black_player}}</th>
-                            <th>{{game.startDate}}</th>
+                        <tr title="{{game.start_date}}">
+                            <th class="chtour-no-small">{{forloop.counter}}</th>
+                            <th class="chtour-game-player">{{game.playing_white_player}}</th>
+                            <th class="chtour-game-result">{{game.result}}</th>
+                            <th class="chtour-game-player">{{game.playing_black_player}}</th>
+                            <th class="chtour-no-small hidden-phone"></th>
                         </tr>
                     {% endfor %}
                 </tbody>

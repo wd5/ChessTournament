@@ -76,6 +76,9 @@ STATICFILES_DIRS = (
     os.path.join(APPLICATION_ROOT, '../static'),
 )
 
+if DEBUG:
+    STATICFILES_DIRS += (os.path.join(APPLICATION_ROOT, '../styles'),)
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
