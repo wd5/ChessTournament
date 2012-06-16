@@ -1,0 +1,21 @@
+<ul class="breadcrumb">
+    <li class="active">
+        <a class="chtour-tounrnaments" href="#">Tournaments</a>
+    </li>
+</ul>
+<div class="container" style="text-align: center;">
+    <h1>Tournaments</h1>
+    <div>
+        <table class="table table-striped">
+            <tbody>
+                {% for tournament in tournaments %}
+                    <tr class="chtour-tounrnament" data-tournament-id="{{tournament.id}}">
+                        <th>{{forloop.counter}}</th>
+                        <th>{{tournament.name}}</th>
+                        <th>{{tournament.startDate}}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

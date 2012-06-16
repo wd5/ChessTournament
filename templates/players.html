@@ -1,0 +1,21 @@
+<ul class="breadcrumb">
+    <li class="active">
+        <a class="chtour-players" href="#">Players</a>
+    </li>
+</ul>
+<div class="container" style="text-align: center;">
+    <h1>Players</h1>
+    <div>
+        <table class="table table-striped">
+            <tbody>
+                {% for player in players %}
+                    <tr class="chtour-player" data-player-id="{{player.id}}">
+                        <th>{{forloop.counter}}</th>
+                        <th>{{player.name}}</th>
+                        <th>{{player.rank}}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

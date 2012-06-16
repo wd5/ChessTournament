@@ -1,0 +1,31 @@
+<ul class="breadcrumb">
+    <li>
+        <a class="chtour-tounrnaments" href="#">Tournaments</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">
+        <a href="#">{{tournament.name}}</a>
+    </li>
+</ul>
+<div class="container" style="text-align: center;">
+    <h1>{{tournament.name}}</h1>
+    <p><b>{{tournament.start_date}}</b></p>
+    <div>
+        {% for round in tournament.rounds %}
+            <h3>Round {{round.number}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for game in round.games %}
+                        <tr>
+                            <th>{{forloop.counter}}</th>
+                            <th>{{game.playing_white_player}}</th>
+                            <th>{{game.result}}</th>
+                            <th>{{game.playing_black_player}}</th>
+                            <th>{{game.startDate}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+</div>
