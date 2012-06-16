@@ -9,10 +9,13 @@
 </ul>
 <div class="container" style="text-align: center;">
     <h1>{{tournament.name}}</h1>
-    <p><b>{{tournament.start_date}}</b></p>
+    <p>
+        <b>Date:</b> {{tournament.start_date}};
+        <b>Type of tournament:</b> {{tournament.type}};
+    </p>
     <div>
         {% for round in tournament.rounds %}
-            <h3>Round {{round.number}}</h3>
+            <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
             <table class="table table-striped">
                 <tbody>
                     {% for game in round.games %}

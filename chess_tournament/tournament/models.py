@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=60)
     rank = models.IntegerField()
 
     @property
@@ -23,8 +23,13 @@ class Player(models.Model):
 
 
 class Tournament(models.Model):
+    TOURNAMENT_TYPE = (
+        ('Swiss-system', 'Swiss-system'),
+    )
+
     start_date = models.DateField()
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=60)
+    type = models.CharField(max_length=30, choices=TOURNAMENT_TYPE, default='Swiss-system')
 
     @property
     def rounds(self):

@@ -4693,43 +4693,51 @@ body {
     padding-bottom: 0;
   }
 }
-table .chtour-no-small {
+.chtour-undercrossed-header {
+  border-bottom: 2px solid #333333;
+  margin: 0 -5px;
+  padding: 3px;
+}
+.table tr {
+  cursor: pointer;
+}
+.table .chtour-no-small {
   width: 14px;
   min-width: 14px;
   text-align: center;
 }
-table .chtour-no-large {
+.table .chtour-no-large {
   width: 22px;
   min-width: 22px;
   text-align: center;
 }
-table .chtour-player-name {
+.table .chtour-player-name {
   text-align: left;
 }
-table .chtour-player-rank {
+.table .chtour-player-rank {
   width: 30px;
   min-width: 30px;
   text-align: center;
 }
-table .chtour-tournament-name {
+.table .chtour-tournament-name {
   width: 100%;
   text-align: left;
 }
-table .chtour-tournament-date {
+.table .chtour-tournament-date {
   width: 100px;
   min-width: 100px;
   text-align: center;
 }
-table .chtour-game-player {
+.table .chtour-game-player {
   width: 50%;
   text-align: left;
 }
-table .chtour-game-result {
+.table .chtour-game-result {
   width: 40px;
   min-width: 40px;
   text-align: center;
 }
-table .chtour-game-date {
+.table .chtour-game-date {
   width: 100px;
   min-width: 100px;
   text-align: center;
