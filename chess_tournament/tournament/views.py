@@ -1,6 +1,4 @@
-import json
-from chess_tournament.tournament.models import Tournament, Player, Round
-from django.http import HttpResponse
+from chess_tournament.tournament.models import Tournament, Player
 from django.shortcuts import render_to_response
 
 
@@ -14,9 +12,7 @@ def tournaments_view(request):
 
 
 def tournament_view(request, id):
-#    rounds = Round.objects.filter(tournament = id)
     tournament = Tournament.objects.get(id = id)
-#    tournament.rounds.all()
     return render_to_response('tournament.html', locals())
 
 
@@ -24,3 +20,6 @@ def players_view(request):
     players = Player.objects.order_by('-rank').all()
     return render_to_response('players.html', locals())
 
+
+def login_success_view(request):
+    return render_to_response('login-success.html', locals())

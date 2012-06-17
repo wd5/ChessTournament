@@ -1,0 +1,43 @@
+<div class="modal chtour-login-form">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Login</h3>
+    </div>
+    <div class="modal-body">
+        <ul class="unstyled">
+            <form class="form-horizontal" action="/accounts/login/?next=/login-success" method="POST">
+                {% csrf_token %}
+
+                {% for field, errors in form.errors.iteritems %}
+                    {% ifequal field "__all__" %}
+                        <div class="control-group{% if errors %} error{% endif %}">
+                            {% for error in errors %}
+                                <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endifequal %}
+                {% endfor %}
+
+                <div class="control-group{% if form.username.errors %} error{% endif %}">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {% for error in form.username.errors %}
+                        <span class="help-inline">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="control-group{% if form.password.errors %} error{% endif %}">
+                    {{ form.password.label_tag }}
+                    {{ form.password}}
+                    {% for error in form.password.errors %}
+                        <span class="help-inline">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </form>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary chtour-login-button">Login</button>
+    </div>
+</div>

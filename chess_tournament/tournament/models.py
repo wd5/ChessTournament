@@ -30,6 +30,7 @@ class Tournament(models.Model):
     start_date = models.DateField()
     name = models.CharField(max_length=60)
     type = models.CharField(max_length=30, choices=TOURNAMENT_TYPE, default='Swiss-system')
+    players = models.ManyToManyField(Player)
 
     @property
     def rounds(self):

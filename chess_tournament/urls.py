@@ -10,11 +10,11 @@ urlpatterns = patterns('',
     url(r'^tournaments$', 'chess_tournament.tournament.views.tournaments_view'),
     url(r'^tournaments/(\d{1,6})$', 'chess_tournament.tournament.views.tournament_view'),
     url(r'^players$', 'chess_tournament.tournament.views.players_view'),
-    # url(r'^chess_tournament/', include('chess_tournament.foo.urls')),
+    url(r'^login-success$', 'chess_tournament.tournament.views.login_success_view'),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+#    url( r'^accounts/signup/$', signup ),
+    url( r'^accounts/login/$', 'django.contrib.auth.views.login', { "template_name": "login.html" } ),
+    url( r'^accounts/logout/$', 'django.contrib.auth.views.logout' ),
 
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

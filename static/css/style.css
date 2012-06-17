@@ -4742,3 +4742,44 @@ body {
   min-width: 100px;
   text-align: center;
 }
+@media (min-width: 270px) {
+  .modal {
+    width: 250px;
+    margin: -250px 0 0 -125px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+  }
+}
+@media (max-width: 269px) {
+  .modal {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    margin: 0;
+  }
+}
+.chtour-permission .chtour-managment {
+  display: none;
+}
+.chtour-permission .chtour-logout {
+  display: none;
+}
+.chtour-permission .chtour-login {
+  display: block;
+}
+.chtour-permission.chtour-logged .chtour-managment {
+  display: none;
+}
+.chtour-permission.chtour-logged .chtour-logout {
+  display: block;
+}
+.chtour-permission.chtour-logged .chtour-login {
+  display: none;
+}
+.chtour-permission.chtour-logged.chtour-logged-staff .chtour-managment {
+  display: block;
+}
