@@ -10,13 +10,10 @@ class Player(models.Model):
         return Game.objects.filter(models.Q(playing_white_player=self) |
                                    models.Q(playing_black_player=self))
 
-    @property
-    def playing_white_games(self):
-        return self.playing_white_game_set.all()
-
-    @property
-    def playing_black_games(self):
-        return self.playing_black_game_set.all()
+    def get_all_games_in_tournament(self, tournament):
+        return Game.objects.filter(models.Q(round__tournament=tournament),
+                                  (models.Q(playing_white_player=self) |
+                                   models.Q(playing_black_player=self)))
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.rank)
@@ -36,8 +33,21 @@ class Tournament(models.Model):
     def rounds(self):
         return self.round_set.order_by('-number').all()
 
+    @property
+    def results(self):
+        return self.tournamentresult_set.all()
+
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.start_date)
+
+
+class TournamentResult(models.Model):
+    tournament = models.ForeignKey(Tournament)
+    player = models.ForeignKey(Player)
+    points = models.FloatField(default=0)
+
+    def __unicode__(self):
+        return '%s - %s' % (self.tournament, self.points)
 
 
 class Round(models.Model):

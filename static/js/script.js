@@ -34,6 +34,21 @@ $(function () {
         });
     });
 
+    $('.chtour-tounrnament-toss').live('click', function () {
+        var tournamentId = $(this).data('tournament-id');
+        console.info(tournamentId)
+        $.ajax({
+            cache: true,
+            dataType: "html",
+            url: '/tournaments/' + tournamentId + '/toss',
+            success: function (content) {
+                $('#main').empty().append(content);
+                $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
+                $('header .chtour-tounrnaments').parent().addClass('active');
+            }
+        });
+    });
+
     $('.chtour-players').live('click', function () {
         $.ajax({
             cache: true,
@@ -63,7 +78,6 @@ $(function () {
                 }
             }
         });
-//        $('.errorlist', form).addClass('control-group').addClass('error').children().addClass('help-inline');
         $('.chtour-login-button', loginForm).click(function () {
             form.submit();
         });
@@ -91,7 +105,7 @@ $(function () {
             cache: true,
             dataType: "html",
             url: '/accounts/logout/',
-            success: function (content) {
+            success: function () {
                 $('.chtour-permission').removeClass('chtour-logged').removeClass('chtour-logged-staff');
             }
         });

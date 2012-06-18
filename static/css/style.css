@@ -4693,6 +4693,13 @@ body {
     padding-bottom: 0;
   }
 }
+.chtour-footer p {
+  padding-top: 10px;
+  text-align: center;
+}
+.chtour-table-view {
+  text-align: center;
+}
 .chtour-undercrossed-header {
   border-bottom: 2px solid #333333;
   margin: 0 -5px;
