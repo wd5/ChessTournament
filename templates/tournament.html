@@ -14,6 +14,13 @@
         <b>Type of tournament:</b> {{tournament.type}};
     </p>
     <div>
+        {% if all_games_finished and not is_last_round %}
+            <button type="button"
+                    class="btn btn-large btn-success chtour-tounrnament-toss"
+                    data-tournament-id="{{tournament.id}}">
+                Toss
+            </button>
+        {% endif %}
         {% if tournament.rounds %}
             {% for round in tournament.rounds %}
                 <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
@@ -31,12 +38,6 @@
                     </tbody>
                 </table>
             {% endfor %}
-        {% else %}
-            <button type="button"
-                    class="btn btn-large btn-success chtour-tounrnament-toss"
-                    data-tournament-id="{{tournament.id}}">
-                Toss
-            </button>
         {% endif %}
     </div>
 </div>

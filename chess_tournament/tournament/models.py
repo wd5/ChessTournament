@@ -16,7 +16,7 @@ class Player(models.Model):
                                    models.Q(playing_black_player=self)))
 
     def __unicode__(self):
-        return '%s (%s)' % (self.name, self.rank)
+        return u'%s (%s)' % (self.name, self.rank)
 
 
 class Tournament(models.Model):
@@ -28,6 +28,7 @@ class Tournament(models.Model):
     name = models.CharField(max_length=60)
     type = models.CharField(max_length=30, choices=TOURNAMENT_TYPE, default='Swiss-system')
     players = models.ManyToManyField(Player)
+    win_prizes_count = models.IntegerField(default=1)
 
     @property
     def rounds(self):
@@ -37,8 +38,11 @@ class Tournament(models.Model):
     def results(self):
         return self.tournamentresult_set.all()
 
+    def get_all_games_in_tournament(self):
+        return Game.objects.filter(round__tournament=self)
+
     def __unicode__(self):
-        return '%s (%s)' % (self.name, self.start_date)
+        return u'%s (%s)' % (self.name, self.start_date)
 
 
 class TournamentResult(models.Model):
@@ -47,7 +51,7 @@ class TournamentResult(models.Model):
     points = models.FloatField(default=0)
 
     def __unicode__(self):
-        return '%s - %s' % (self.tournament, self.points)
+        return u'%s - %s' % (self.tournament, self.points)
 
 
 class Round(models.Model):
@@ -60,7 +64,7 @@ class Round(models.Model):
         return self.game_set.all()
 
     def __unicode__(self):
-        return '%s (%s)' % (self.tournament, self.number)
+        return u'%s (%s)' % (self.tournament, self.number)
 
 
 class Game(models.Model):
@@ -78,4 +82,4 @@ class Game(models.Model):
     start_date = models.DateTimeField()
 
     def __unicode__(self):
-        return '%s %s %s' % (self.playing_white_player, self.result, self.playing_black_player)
+        return u'%s %s %s' % (self.playing_white_player, self.result, self.playing_black_player)
