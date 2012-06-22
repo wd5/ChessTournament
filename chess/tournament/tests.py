@@ -1,9 +1,9 @@
 from math import fabs
-from chess_tournament.tournament.elo_rank import get_ranking_coefficient, get_expected_value, get_rank_change
+from chess.tournament.elo_rank import get_ranking_coefficient, get_expected_value, get_rank_change
 from django.test import TestCase
 
-from chess_tournament.tournament.models import Player, TournamentResult, Game
-from chess_tournament.tournament.swiss_system import get_players_position_comparator, get_rounds_count, get_games_pairs
+from chess.tournament.models import Player, TournamentResult, Game
+from chess.tournament.swiss_system import get_players_position_comparator, get_rounds_count, get_games_pairs
 
 
 def create_player(id, name, rank):

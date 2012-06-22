@@ -1,5 +1,5 @@
 from django.contrib import admin
-from chess_tournament.tournament.models import *
+from chess.tournament.models import *
 
 
 class TournamentAdmin(admin.ModelAdmin):

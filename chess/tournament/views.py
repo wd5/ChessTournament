@@ -1,10 +1,10 @@
 import datetime
 from operator import attrgetter
-from chess_tournament.tournament.elo_rank import get_rank_change
+from chess.tournament.elo_rank import get_rank_change
 from django.db import transaction
 from django.shortcuts import render_to_response
-from chess_tournament.tournament.models import Tournament, Player, Round, Game, TournamentResult
-from chess_tournament.tournament.swiss_system import get_games_pairs, get_rounds_count, get_players_position_comparator
+from chess.tournament.models import Tournament, Player, Round, Game, TournamentResult
+from chess.tournament.swiss_system import get_games_pairs, get_rounds_count, get_players_position_comparator
 
 
 def home_view(request):
