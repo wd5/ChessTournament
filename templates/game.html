@@ -1,0 +1,38 @@
+<ul class="breadcrumb">
+    <li>
+        <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="#tournaments/tournament.id">Tournament</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">
+        <a href="#tournaments/tournament.id/{{game.id}}">Game</a>
+    </li>
+</ul>
+<div class="container chtour-table-view">
+    <p>{{game.playing_white_player}}</p>
+    {% if request.user.is_staff %}
+        <div>
+            <button type="button"
+                    class="btn btn-large {% if game.result == '1:0' %} btn-success{% endif %} chtour-game-result chtour-game-white-win"
+                    data-game-id="{{game.id}}" data-game-result="1:0">
+                1:0
+            </button>
+            <button type="button"
+                    class="btn btn-large {% if game.result == '0.5:0.5' %} btn-success{% endif %} chtour-game-result chtour-game-dead-heat"
+                    data-game-id="{{game.id}}" data-game-result="0.5:0.5">
+                0.5:0.5
+            </button>
+            <button type="button"
+                    class="btn btn-large {% if game.result == '0:1' %} btn-success{% endif %} chtour-game-result chtour-game-black-win"
+                    data-game-id="{{game.id}}" data-game-result="0:1">
+                0:1
+            </button>
+        </div>
+    {% else %}
+        <p>{{game.result}}</p>
+    {% endif %}
+    <p>{{game.playing_black_player}}</p>
+</div>

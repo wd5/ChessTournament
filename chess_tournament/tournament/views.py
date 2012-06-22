@@ -14,8 +14,8 @@ def tournaments_view(request):
     return render_to_response('tournaments.html', locals())
 
 
-def tournament_view(request, id):
-    tournament = Tournament.objects.get(id=id)
+def tournament_view(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
 
     max_rounds_count = get_rounds_count(len(tournament.players.all()), tournament.win_prizes_count)
     round_number = len(tournament.rounds)
@@ -30,8 +30,8 @@ def tournament_view(request, id):
 
 
 @transaction.commit_on_success
-def tournament_toss_view(request, id):
-    tournament = Tournament.objects.get(id=id)
+def tournament_toss_view(request, tournament_id):
+    tournament = Tournament.objects.get(id=tournament_id)
     tournament_players = tournament.players.all()
 
     # create tournament results if no created yet
@@ -78,6 +78,52 @@ def tournament_toss_view(request, id):
             all_games_finished = False
             break
     return render_to_response('tournament.html', locals())
+
+
+def game_view(request, game_id):
+    game = Game.objects.get(id=game_id)
+    return render_to_response('game.html', locals())
+
+
+def _get_points_change(previous_result, new_result, play_white):
+    change = 0.0
+
+    if previous_result == '1:0' and play_white:
+        change -= 1
+    elif previous_result == '0.5:0.5':
+        change -= 0.5
+    elif previous_result == '0:1' and not play_white:
+        change -= 1
+
+    if new_result == '1:0' and play_white:
+        change += 1
+    elif new_result == '0.5:0.5':
+        change += 0.5
+    elif new_result == '0:1' and not play_white:
+        change += 1
+
+    return change
+
+
+@transaction.commit_on_success
+def game_set_result_view(request, game_id, result):
+    game = Game.objects.get(id=game_id)
+
+    # save game result
+    previous_result = game.result
+    game.result = result
+    game.save()
+
+    # update tournament result
+    for tournament_result in game.round.tournament.results:
+        if game.playing_white_player == tournament_result.player:
+            tournament_result.points += _get_points_change(previous_result, result, True)
+            tournament_result.save()
+        if game.playing_black_player == tournament_result.player:
+            tournament_result.points += _get_points_change(previous_result, result, False)
+            tournament_result.save()
+
+    return render_to_response('game.html', locals())
 
 
 def players_view(request):

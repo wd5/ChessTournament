@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^tournaments$', 'chess_tournament.tournament.views.tournaments_view'),
     url(r'^tournaments/(\d{1,6})$', 'chess_tournament.tournament.views.tournament_view'),
     url(r'^tournaments/(\d{1,6})/toss$', 'chess_tournament.tournament.views.tournament_toss_view'),
+    url(r'^games/(\d{1,6})$', 'chess_tournament.tournament.views.game_view'),
+    url(r'^games/(\d{1,6})/set-result/(1:0|0\.5:0\.5|0:1)$', 'chess_tournament.tournament.views.game_set_result_view'),
     url(r'^players$', 'chess_tournament.tournament.views.players_view'),
     url(r'^login-success$', 'chess_tournament.tournament.views.login_success_view'),
 

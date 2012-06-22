@@ -36,7 +36,6 @@ $(function () {
 
     $('.chtour-tounrnament-toss').live('click', function () {
         var tournamentId = $(this).data('tournament-id');
-        console.info(tournamentId)
         $.ajax({
             cache: true,
             dataType: "html",
@@ -45,6 +44,45 @@ $(function () {
                 $('#main').empty().append(content);
                 $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
                 $('header .chtour-tounrnaments').parent().addClass('active');
+            }
+        });
+    });
+
+    $('.chtour-tournament-game').live('click', function () {
+        var gameId = $(this).data('game-id');
+        $.ajax({
+            cache: true,
+            dataType: "html",
+            url: '/games/' + gameId,
+            success: function (content) {
+                $('#main').empty().append(content);
+            }
+        });
+    });
+
+    $('.chtour-game-result').live('click', function () {
+        var currentButton = $(this);
+        if (currentButton.hasClass('disabled') || currentButton.hasClass('btn-success')) {
+            return;
+        }
+        var gameId = currentButton.data('game-id');
+        var gameResult = currentButton.data('game-result');
+        var buttons = currentButton.parent().children('.chtour-game-result');
+        var previousButton = currentButton.parent().children('.chtour-game-result.btn-success');
+
+        buttons.removeClass('btn-success').addClass('disabled');
+        currentButton.addClass('btn-success');
+
+        $.ajax({
+            cache: false,
+            dataType: 'html',
+            url: '/games/' + gameId + '/set-result/' + gameResult,
+            success: function () {
+                buttons.removeClass('disabled');
+            },
+            error: function () {
+                buttons.removeClass('btn-success').removeClass('disabled');
+                previousButton.addClass('btn-success');
             }
         });
     });

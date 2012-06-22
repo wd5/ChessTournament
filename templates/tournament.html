@@ -27,7 +27,7 @@
                 <table class="table table-striped">
                     <tbody>
                         {% for game in round.games %}
-                            <tr title="{{game.start_date}}">
+                            <tr class="chtour-tournament-game" data-game-id="{{game.id}}" title="{{game.start_date}}">
                                 <th class="chtour-no-small">{{forloop.counter}}</th>
                                 <th class="chtour-game-player">{{game.playing_white_player}}</th>
                                 <th class="chtour-game-result">{{game.result}}</th>
