@@ -1,5 +1,6 @@
 import datetime
 from operator import attrgetter
+from chess_tournament.tournament.elo_rank import get_rank_change
 from django.db import transaction
 from django.shortcuts import render_to_response
 from chess_tournament.tournament.models import Tournament, Player, Round, Game, TournamentResult
@@ -102,23 +103,21 @@ def game_view(request, game_id):
     return render_to_response('game.html', locals())
 
 
+def _get_player_game_result(result, play_white):
+    if result == '1:0' and play_white:
+        return 1
+    elif result == '0.5:0.5':
+        return 0.5
+    elif result == '0:1' and not play_white:
+        return 1
+    else:
+        return 0
+
+
 def _get_points_change(previous_result, new_result, play_white):
     change = 0.0
-
-    if previous_result == '1:0' and play_white:
-        change -= 1
-    elif previous_result == '0.5:0.5':
-        change -= 0.5
-    elif previous_result == '0:1' and not play_white:
-        change -= 1
-
-    if new_result == '1:0' and play_white:
-        change += 1
-    elif new_result == '0.5:0.5':
-        change += 0.5
-    elif new_result == '0:1' and not play_white:
-        change += 1
-
+    change -= _get_player_game_result(previous_result, play_white)
+    change += _get_player_game_result(new_result, play_white)
     return change
 
 
@@ -128,8 +127,39 @@ def game_set_result_view(request, game_id, result):
 
     # save game result
     previous_result = game.result
+    playing_white_player = game.playing_white_player
+    playing_black_player = game.playing_black_player
+
+    # increase players games count
+    if previous_result == 'vs':
+        playing_white_player.game_count += 1
+        playing_black_player.game_count += 1
+
+    # restore players rank if correcting result
+    playing_white_player.rank -= game.playing_white_player_rank_change
+    playing_black_player.rank -= game.playing_black_player_rank_change
+
+    # calculating players rank changes
+    game.playing_white_player_rank_change = get_rank_change(playing_white_player.rank,
+        playing_white_player.game_count,
+        playing_black_player.rank,
+        _get_player_game_result(result, True))
+    game.playing_black_player_rank_change = get_rank_change(playing_black_player.rank,
+        playing_black_player.game_count,
+        playing_white_player.rank,
+        _get_player_game_result(result, False))
+
+    # change players ranks
+    playing_white_player.rank += game.playing_white_player_rank_change
+    playing_black_player.rank += game.playing_black_player_rank_change
+
+    # update game changes
     game.result = result
     game.save()
+
+    # update players rank changes
+    playing_white_player.save()
+    playing_black_player.save()
 
     # update tournament result
     for tournament_result in game.round.tournament.results:

@@ -12,7 +12,7 @@
                     <tr class="chtour-player" data-player-id="{{player.id}}">
                         <th class="chtour-no-large">{{forloop.counter}}</th>
                         <th class="chtour-player-name">{{player.name}}</th>
-                        <th class="chtour-player-rank">{{player.rank}}</th>
+                        <th class="chtour-player-rank">{{player.rank|floatformat:0}}</th>
                     </tr>
                 {% endfor %}
             </tbody>

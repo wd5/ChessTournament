@@ -3,7 +3,8 @@ from django.db import models
 
 class Player(models.Model):
     name = models.CharField(max_length=60)
-    rank = models.IntegerField()
+    rank = models.FloatField()
+    game_count = models.IntegerField(default=0)
 
     @property
     def all_games(self):
@@ -16,7 +17,7 @@ class Player(models.Model):
                                    models.Q(playing_black_player=self)))
 
     def __unicode__(self):
-        return u'%s (%s)' % (self.name, self.rank)
+        return u'%s (%s)' % (self.name, int(self.rank))
 
 
 class Tournament(models.Model):
@@ -78,6 +79,8 @@ class Game(models.Model):
     round = models.ForeignKey(Round)
     playing_white_player = models.ForeignKey(Player, related_name='playing_white_game_set')
     playing_black_player = models.ForeignKey(Player, related_name='playing_black_game_set')
+    playing_white_player_rank_change = models.FloatField(default=0)
+    playing_black_player_rank_change = models.FloatField(default=0)
     result = models.CharField(max_length=10, choices=GAME_RESULT, default='vs')
     start_date = models.DateTimeField()
 

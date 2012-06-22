@@ -1,3 +1,5 @@
+from math import fabs
+from chess_tournament.tournament.elo_rank import get_ranking_coefficient, get_expected_value, get_rank_change
 from django.test import TestCase
 
 from chess_tournament.tournament.models import Player, TournamentResult, Game
@@ -200,3 +202,29 @@ class SwissSystemTest(TestCase):
         self.assertTrue(game_pairs[1][0] == player2 or game_pairs[1][1] == player2)
         self.assertTrue(game_pairs[1][0] == player4 or game_pairs[1][1] == player4)
         self.assertEqual(player5, auto_win_player)
+
+
+class EloRankTest(TestCase):
+
+    def test_get_ranking_coefficient(self):
+        self.assertEqual(get_ranking_coefficient(1000, 10), 30)
+        self.assertEqual(get_ranking_coefficient(2400, 10), 30)
+        self.assertEqual(get_ranking_coefficient(3000, 10), 30)
+        self.assertEqual(get_ranking_coefficient(1000, 30), 30)
+        self.assertEqual(get_ranking_coefficient(2400, 30), 30)
+        self.assertEqual(get_ranking_coefficient(3000, 30), 30)
+        self.assertEqual(get_ranking_coefficient(1000, 31), 15)
+        self.assertEqual(get_ranking_coefficient(2400, 31), 10)
+        self.assertEqual(get_ranking_coefficient(3000, 31), 10)
+
+    def test_get_expected_result(self):
+        self.assertEqual(get_expected_value(1000, 1000), get_expected_value(1000, 1000))
+        self.assertLess(get_expected_value(1000, 1500), get_expected_value(1500, 1000))
+
+    def test_get_rank_change(self):
+        self.assertGreater(get_rank_change(1000, 10, 1500, 1), get_rank_change(1500, 10, 1000, 1))
+        self.assertGreater(get_rank_change(1000, 10, 1500, 0.5), get_rank_change(1500, 10, 1000, 0.5))
+        self.assertGreater(get_rank_change(1000, 10, 1500, 0), get_rank_change(1500, 10, 1000, 0))
+
+        self.assertGreater(fabs(get_rank_change(1000, 10, 1500, 1)), fabs(get_rank_change(1500, 10, 1000, 1)))
+        self.assertLess(fabs(get_rank_change(1000, 10, 1500, 0)), fabs(get_rank_change(1500, 10, 1000, 0)))
