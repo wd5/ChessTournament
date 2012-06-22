@@ -21,23 +21,33 @@
                 Toss
             </button>
         {% endif %}
-        {% if tournament.rounds %}
-            {% for round in tournament.rounds %}
-                <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
-                <table class="table table-striped">
-                    <tbody>
-                        {% for game in round.games %}
-                            <tr class="chtour-tournament-game" data-game-id="{{game.id}}" title="{{game.start_date}}">
-                                <th class="chtour-no-small">{{forloop.counter}}</th>
-                                <th class="chtour-game-player">{{game.playing_white_player}}</th>
-                                <th class="chtour-game-result">{{game.result}}</th>
-                                <th class="chtour-game-player">{{game.playing_black_player}}</th>
-                                <th class="chtour-no-small hidden-phone"></th>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% endfor %}
+        {% if tournament_results %}
+            <h3 class="chtour-undercrossed-header">Tournament Results</h3>
+            <table class="table table-striped">
+                {% for result in tournament_results %}
+                    <tr class="chtour-tournament-result">
+                        <th class="chtour-no-large">{{forloop.counter}}</th>
+                        <th class="chtour-player-name">{{result.player}}</th>
+                        <th class="chtour-player-rank">{{result.points}}</th>
+                    </tr>
+                {% endfor %}
+            </table>
         {% endif %}
+        {% for round in tournament.rounds %}
+            <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
+            <table class="table table-striped">
+                <tbody>
+                    {% for game in round.games %}
+                        <tr class="chtour-tournament-game" data-game-id="{{game.id}}" title="{{game.start_date}}">
+                            <th class="chtour-no-small">{{forloop.counter}}</th>
+                            <th class="chtour-game-player">{{game.playing_white_player}}</th>
+                            <th class="chtour-game-result">{{game.result}}</th>
+                            <th class="chtour-game-player">{{game.playing_black_player}}</th>
+                            <th class="chtour-no-small hidden-phone"></th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
     </div>
 </div>

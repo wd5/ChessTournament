@@ -1,8 +1,9 @@
 import datetime
+from operator import attrgetter
 from django.db import transaction
 from django.shortcuts import render_to_response
 from chess_tournament.tournament.models import Tournament, Player, Round, Game, TournamentResult
-from chess_tournament.tournament.swiss_system import get_games_pairs, get_rounds_count
+from chess_tournament.tournament.swiss_system import get_games_pairs, get_rounds_count, get_players_position_comparator
 
 
 def home_view(request):
@@ -17,12 +18,20 @@ def tournaments_view(request):
 def tournament_view(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
 
+    tournament_results = tournament.results
+    tournament_games = tournament.get_all_games_in_tournament()
+    players_position_comparator = get_players_position_comparator(tournament_results, tournament_games)
+    tournament_results = sorted(tournament_results,
+        key=attrgetter('player'),
+        cmp=players_position_comparator,
+        reverse=True)
+
     max_rounds_count = get_rounds_count(len(tournament.players.all()), tournament.win_prizes_count)
     round_number = len(tournament.rounds)
     is_last_round = round_number >= max_rounds_count
 
     all_games_finished = True
-    for game in tournament.get_all_games_in_tournament():
+    for game in tournament_games:
         if game.result == 'vs':
             all_games_finished = False
             break
@@ -55,7 +64,8 @@ def tournament_toss_view(request, tournament_id):
 
     # create games
     tournament_results = tournament.results
-    game_pairs, auto_win_player = get_games_pairs(tournament_results, tournament.get_all_games_in_tournament())
+    tournament_games = tournament.get_all_games_in_tournament()
+    game_pairs, auto_win_player = get_games_pairs(tournament_results, tournament_games)
     for game_pair in game_pairs:
         game = Game(round=round,
             playing_white_player=game_pair[0],
@@ -69,6 +79,13 @@ def tournament_toss_view(request, tournament_id):
             if auto_win_player == tournament_result.player:
                 tournament_result.points += 1
                 tournament_result.save()
+
+    # sort results
+    players_position_comparator = get_players_position_comparator(tournament_results, tournament_games)
+    tournament_results = sorted(tournament_results,
+        key=attrgetter('player'),
+        cmp=players_position_comparator,
+        reverse=True)
 
     # render response
     is_last_round = round_number >= max_rounds_count
