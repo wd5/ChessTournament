@@ -23,27 +23,33 @@ def tournament_view(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
 
     tournament_results = tournament.results
+    tournament_rounds = tournament.rounds
     tournament_games = tournament.get_all_games_in_tournament()
     players_position_comparator = get_players_position_comparator(tournament_results, tournament_games)
     tournament_results = sorted(tournament_results,
         key=attrgetter('player'),
         cmp=players_position_comparator,
         reverse=True)
+
     players_count = len(tournament_results) or len(tournament.players.all())
-    max_rounds_count = get_rounds_count(players_count, tournament.win_prizes_count) if players_count > 1 else 0
+    max_rounds_count = get_rounds_count(players_count, tournament.winning_places) if players_count > 1 else 0
 
-    can_tournament_toss = max_rounds_count > 0 and request.user.has_perm('tournament.create_rounds')
-    if can_tournament_toss:
-        round_number = len(tournament.rounds)
-        last_round = round_number >= max_rounds_count
+    round_number = len(tournament_rounds)
+    is_last_round = round_number >= max_rounds_count
 
-        all_games_finished = True
-        for game in tournament_games:
-            if game.result == 'vs':
-                all_games_finished = False
-                break
+    all_games_finished = True
+    for game in tournament_games:
+        if game.result == 'vs':
+            all_games_finished = False
+            break
 
-        can_tournament_toss =  all_games_finished and not last_round
+    tournament_finished = max_rounds_count > 0 and\
+                          all_games_finished and\
+                          is_last_round
+    can_tournament_toss = max_rounds_count > 0 and\
+                          all_games_finished and\
+                          not is_last_round and\
+                          request.user.has_perm('tournament.create_rounds')
 
     return render_to_response('tournament.html', locals())
 
@@ -67,7 +73,7 @@ def tournament_toss_view(request, tournament_id):
             tournament_result.save()
 
     # create round
-    max_rounds_count = get_rounds_count(len(tournament_players), tournament.win_prizes_count)
+    max_rounds_count = get_rounds_count(len(tournament_players), tournament.winning_places)
     round_number = len(tournament.rounds) + 1
     if round_number > max_rounds_count:
         raise
@@ -89,6 +95,8 @@ def tournament_toss_view(request, tournament_id):
     if auto_win_player:
         for tournament_result in tournament_results:
             if auto_win_player == tournament_result.player:
+                round.auto_win_player = auto_win_player
+                round.save()
                 tournament_result.points += 1
                 tournament_result.save()
 

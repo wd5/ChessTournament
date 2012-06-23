@@ -6,16 +6,6 @@ class Player(models.Model):
     rank = models.FloatField()
     game_count = models.IntegerField(default=0)
 
-    @property
-    def all_games(self):
-        return Game.objects.filter(models.Q(playing_white_player=self) |
-                                   models.Q(playing_black_player=self))
-
-    def get_all_games_in_tournament(self, tournament):
-        return Game.objects.filter(models.Q(round__tournament=tournament),
-                                  (models.Q(playing_white_player=self) |
-                                   models.Q(playing_black_player=self)))
-
     def __unicode__(self):
         return u'%s (%s)' % (self.name, int(self.rank))
 
@@ -36,7 +26,7 @@ class Tournament(models.Model):
     name = models.CharField(max_length=60)
     type = models.CharField(max_length=30, choices=TOURNAMENT_TYPE, default='Swiss-system')
     players = models.ManyToManyField(Player)
-    win_prizes_count = models.IntegerField(default=1)
+    winning_places = models.IntegerField(default=1)
 
     @property
     def rounds(self):
@@ -66,6 +56,7 @@ class Round(models.Model):
     tournament = models.ForeignKey(Tournament)
     number = models.IntegerField()
     start_date = models.DateField()
+    auto_win_player = models.ForeignKey(Player, blank=True, null=True)
 
     @property
     def games(self):
