@@ -1,54 +1,65 @@
-<ul class="breadcrumb">
-    <li>
-        <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
-        <span class="divider">/</span>
-    </li>
-    <li class="active">
-        <a href="#tournaments/{{tournament.name}}">{{tournament.name}}</a>
-    </li>
-</ul>
-<div class="container chtour-table-view">
-    <h1>{{tournament.name}}</h1>
-    <p>
-        <b>Date:</b> {{tournament.start_date}};
-        <b>Type of tournament:</b> {{tournament.type}};
-        <b>Total Rounds:</b> {{max_rounds_count}};
-    </p>
-    <div>
-        {% if all_games_finished and not is_last_round %}
-            <button type="button"
-                    class="btn btn-large btn-success chtour-tounrnament-toss"
-                    data-tournament-id="{{tournament.id}}">
-                Toss
-            </button>
-        {% endif %}
-        {% if tournament_results %}
-            <h3 class="chtour-undercrossed-header">Tournament Results</h3>
-            <table class="table table-striped">
-                {% for result in tournament_results %}
-                    <tr class="chtour-tournament-result">
-                        <th class="chtour-no-large">{{forloop.counter}}</th>
-                        <th class="chtour-player-name">{{result.player}}</th>
-                        <th class="chtour-player-rank">{{result.points}}</th>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
-        {% for round in tournament.rounds %}
-            <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
-            <table class="table table-striped">
-                <tbody>
-                    {% for game in round.games %}
-                        <tr class="chtour-tournament-game" data-game-id="{{game.id}}" title="{{game.start_date}}">
-                            <th class="chtour-no-small">{{forloop.counter}}</th>
-                            <th class="chtour-game-player">{{game.playing_white_player}}</th>
-                            <th class="chtour-game-result">{{game.result}}</th>
-                            <th class="chtour-game-player">{{game.playing_black_player}}</th>
-                            <th class="chtour-no-small hidden-phone"></th>
+{% extends "base.html" %}
+
+
+{% block breadcrumb %}
+    <ul class="breadcrumb">
+        <li>
+            <a class="chtour-tounrnaments" href="/tournaments">Tournaments</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">
+            <a href="/tournaments/{{tournament.id}}">{{tournament.name}}</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="chtour-content container chtour-table-view">
+        <h1>{{tournament.name}}</h1>
+        <p>
+            <b>Date:</b> {{tournament.start_date}};
+            <b>Type of tournament:</b> {{tournament.type}};
+            <b>Total Rounds:</b> {{max_rounds_count}};
+        </p>
+        <div>
+            {% if all_games_finished and not is_last_round %}
+                <button type="button"
+                        class="btn btn-large btn-success chtour-tounrnament-toss"
+                        data-tournament-id="{{tournament.id}}">
+                    Toss
+                </button>
+            {% endif %}
+            {% if tournament_results %}
+                <h3 class="chtour-undercrossed-header">Tournament Results</h3>
+                <table class="table table-striped">
+                    {% for result in tournament_results %}
+                        <tr class="chtour-tournament-result">
+                            <th class="chtour-no-large">{{forloop.counter}}</th>
+                            <th class="chtour-player-name">{{result.player}}</th>
+                            <th class="chtour-player-rank">{{result.points}}</th>
                         </tr>
                     {% endfor %}
-                </tbody>
-            </table>
-        {% endfor %}
+                </table>
+            {% endif %}
+            {% for round in tournament.rounds %}
+                <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
+                <table class="table table-striped">
+                    <tbody>
+                        {% for game in round.games %}
+                            <tr class="chtour-tournament-game"
+                                data-tournament-id="{{tournament.id}}"
+                                data-game-id="{{game.id}}"
+                                title="{{game.start_date}}">
+                                <th class="chtour-no-small">{{forloop.counter}}</th>
+                                <th class="chtour-game-player">{{game.playing_white_player}}</th>
+                                <th class="chtour-game-result">{{game.result}}</th>
+                                <th class="chtour-game-player">{{game.playing_black_player}}</th>
+                                <th class="chtour-no-small hidden-phone"></th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% endblock %}

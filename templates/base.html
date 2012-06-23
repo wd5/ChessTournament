@@ -48,12 +48,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand">Chess Tournament</a>
+                <a href="/" class="brand">Chess Tournament</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li class="active"><a class="chtour-home" href="#home">Home</a></li>
-                        <li><a class="chtour-tounrnaments" href="#tournaments">Tournaments</a></li>
-                        <li><a class="chtour-players" href="#players">Players</a></li>
+                        <li{% if '/' == request.path %} class="active"{% endif %}><a class="chtour-home" href="/">Home</a></li>
+                        <li{% if '/tournaments' in request.path %} class="active"{% endif %}><a class="chtour-tounrnaments" href="/tournaments">Tournaments</a></li>
+                        <li{% if '/players' == request.path %} class="active"{% endif %}><a class="chtour-players" href="/players">Players</a></li>
                     </ul>
                     <ul class="nav pull-right chtour-permission{% if request.user.id %} chtour-logged{% endif %}{% if request.user.is_staff %} chtour-logged-staff{% endif %}">
                         <li><a class="chtour-managment" href="/admin/">Management</a></li>
@@ -65,16 +65,9 @@
         </div>
     </header>
 
-    <div id="main" class="container" role="main">
-        <ul class="breadcrumb">
-            <li class="active">
-                <a class="chtour-players" href="#home">Home</a>
-            </li>
-        </ul>
-        <h1>Chess Tournament</h1>
-        <p>This is test application about chess tournaments</p>
-        <p>Developed with python, django, jquery, twitter bootstrap</p>
-        <p>by Pavel Tyslyatsky {{settings}}</p>
+    <div id="chtour-main" class="container" role="main">
+        {% block breadcrumb %}{% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     <footer class="navbar navbar-fixed-bottom">

@@ -8,7 +8,7 @@ from chess.tournament.swiss_system import get_games_pairs, get_rounds_count, get
 
 
 def home_view(request):
-    return render_to_response('index.html', locals())
+    return render_to_response('home.html', locals())
 
 
 def tournaments_view(request):
@@ -98,8 +98,9 @@ def tournament_toss_view(request, tournament_id):
     return render_to_response('tournament.html', locals())
 
 
-def game_view(request, game_id):
+def game_view(request, tournament_id, game_id):
     game = Game.objects.get(id=game_id)
+    tournament = game.round.tournament
     return render_to_response('game.html', locals())
 
 

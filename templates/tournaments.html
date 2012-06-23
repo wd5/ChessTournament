@@ -1,21 +1,30 @@
-<ul class="breadcrumb">
-    <li class="active">
-        <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
-    </li>
-</ul>
-<div class="container chtour-table-view">
-    <h1 class="chtour-undercrossed-header">Tournaments</h1>
-    <div>
-        <table class="table table-striped">
-            <tbody>
-                {% for tournament in tournaments %}
-                    <tr class="chtour-tounrnament" data-tournament-id="{{tournament.id}}">
-                        <th class="chtour-no-large">{{forloop.counter}}</th>
-                        <th class="chtour-tournament-name">{{tournament.name}}</th>
-                        <th class="chtour-tournament-date">{{tournament.start_date}}</th>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% extends "base.html" %}
+
+
+{% block breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="active">
+            <a class="chtour-tounrnaments" href="/tournaments">Tournaments</a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+{% block content %}
+    <div class="chtour-content container chtour-table-view">
+        <h1 class="chtour-undercrossed-header">Tournaments</h1>
+        <div>
+            <table class="table table-striped">
+                <tbody>
+                    {% for tournament in tournaments %}
+                        <tr class="chtour-tounrnament" data-tournament-id="{{tournament.id}}">
+                            <th class="chtour-no-large">{{forloop.counter}}</th>
+                            <th class="chtour-tournament-name">{{tournament.name}}</th>
+                            <th class="chtour-tournament-date">{{tournament.start_date}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+{% endblock %}

@@ -85,4 +85,4 @@ class Game(models.Model):
     start_date = models.DateTimeField()
 
     def __unicode__(self):
-        return u'%s %s %s' % (self.playing_white_player, self.result, self.playing_black_player)
+        return u'%s - %s' % (self.playing_white_player, self.playing_black_player)

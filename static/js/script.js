@@ -1,37 +1,7 @@
 $(function () {
-    var homeData = $('#main').html();
-
-    $('.chtour-home').live('click', function () {
-        $('#main').empty().append(homeData);
-        $('header .chtour-home').parent().siblings().removeClass('active');
-        $('header .chtour-home').parent().addClass('active');
-    });
-
-    $('.chtour-tounrnaments').live('click', function () {
-        $.ajax({
-            cache: true,
-            dataType: "html",
-            url: '/tournaments',
-            success: function (content) {
-                $('#main').empty().append(content);
-                $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
-                $('header .chtour-tounrnaments').parent().addClass('active');
-            }
-        });
-    });
-
     $('.chtour-tounrnament').live('click', function () {
         var tournamentId = $(this).data('tournament-id');
-        $.ajax({
-            cache: true,
-            dataType: "html",
-            url: '/tournaments/' + tournamentId,
-            success: function (content) {
-                $('#main').empty().append(content);
-                $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
-                $('header .chtour-tounrnaments').parent().addClass('active');
-            }
-        });
+        window.location = '/tournaments/' + tournamentId;
     });
 
     $('.chtour-tounrnament-toss').live('click', function () {
@@ -41,7 +11,7 @@ $(function () {
             dataType: "html",
             url: '/tournaments/' + tournamentId + '/toss',
             success: function (content) {
-                $('#main').empty().append(content);
+                $('.chtour-content').empty().append(content);
                 $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
                 $('header .chtour-tounrnaments').parent().addClass('active');
             }
@@ -49,15 +19,9 @@ $(function () {
     });
 
     $('.chtour-tournament-game').live('click', function () {
+        var tournamentId = $(this).data('tournament-id');
         var gameId = $(this).data('game-id');
-        $.ajax({
-            cache: true,
-            dataType: "html",
-            url: '/games/' + gameId,
-            success: function (content) {
-                $('#main').empty().append(content);
-            }
-        });
+        window.location = '/tournaments/' + tournamentId + '/' + gameId;
     });
 
     $('.chtour-game-result').live('click', function () {
@@ -87,29 +51,12 @@ $(function () {
         });
     });
 
-    $('.chtour-players').live('click', function () {
-        $.ajax({
-            cache: true,
-            dataType: "html",
-            url: '/players',
-            success: function (content) {
-                $('#main').empty().append(content);
-                $('header .chtour-players').parent().siblings().removeClass('active');
-                $('header .chtour-players').parent().addClass('active');
-            }
-        });
-    });
-
     function initAjaxForm (loginForm) {
         var form = $('form', loginForm).ajaxForm({
             success: function (content) {
                 var responseContent = $(content);
                 if (responseContent.hasClass('chtour-login-success')) {
-                    $('.chtour-permission').addClass('chtour-logged');
-                    if (responseContent.hasClass('chtour-login-stuff')) {
-                        $('.chtour-permission').addClass('chtour-logged-staff');
-                    }
-                    loginForm.modal('hide');
+                    window.location.reload();
                 } else {
                     loginForm.children().replaceWith(responseContent.children());
                     initAjaxForm(loginForm);
@@ -144,7 +91,7 @@ $(function () {
             dataType: "html",
             url: '/accounts/logout/',
             success: function () {
-                $('.chtour-permission').removeClass('chtour-logged').removeClass('chtour-logged-staff');
+                window.location.reload();
             }
         });
         return false;
