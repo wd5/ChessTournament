@@ -4764,9 +4764,9 @@ body {
 @media (min-width: 270px) {
   .modal {
     width: 250px;
-    margin: -250px 0 0 -125px;
+    margin: 0 0 0 -125px;
     position: fixed;
-    top: 50%;
+    top: 10px;
     left: 50%;
     right: auto;
   }
