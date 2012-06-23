@@ -21,7 +21,7 @@
 {% block content %}
     <div class="chtour-content container chtour-table-view">
         <p>{{game.playing_white_player}}</p>
-        {% if request.user.is_staff %}
+        {% if can_enter_result %}
             <div>
                 <button type="button"
                         class="btn btn-large {% if game.result == '1:0' %} btn-success{% endif %} chtour-game-result chtour-game-white-win"

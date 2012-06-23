@@ -1,6 +1,7 @@
 import datetime
 from operator import attrgetter
 from chess.tournament.elo_rank import get_rank_change
+from django.contrib.auth.decorators import permission_required
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -28,21 +29,28 @@ def tournament_view(request, tournament_id):
         key=attrgetter('player'),
         cmp=players_position_comparator,
         reverse=True)
+    players_count = len(tournament_results) or len(tournament.players.all())
+    max_rounds_count = get_rounds_count(players_count, tournament.win_prizes_count) if players_count > 1 else 0
 
-    max_rounds_count = get_rounds_count(len(tournament.players.all()), tournament.win_prizes_count)
-    round_number = len(tournament.rounds)
-    is_last_round = round_number >= max_rounds_count
+    can_tournament_toss = max_rounds_count > 0 and request.user.has_perm('tournament.create_rounds')
+    if can_tournament_toss:
+        round_number = len(tournament.rounds)
+        last_round = round_number >= max_rounds_count
 
-    all_games_finished = True
-    for game in tournament_games:
-        if game.result == 'vs':
-            all_games_finished = False
-            break
+        all_games_finished = True
+        for game in tournament_games:
+            if game.result == 'vs':
+                all_games_finished = False
+                break
+
+        can_tournament_toss =  all_games_finished and not last_round
+
     return render_to_response('tournament.html', locals())
 
 
 @csrf_protect
 @transaction.commit_on_success
+@permission_required('tournament.create_rounds', raise_exception=True)
 def tournament_toss_view(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
     tournament_players = tournament.players.all()
@@ -90,6 +98,7 @@ def tournament_toss_view(request, tournament_id):
 def game_view(request, tournament_id, game_id):
     game = Game.objects.get(id=game_id)
     tournament = game.round.tournament
+    can_enter_result = request.user.has_perm('tournament.enter_game_results')
     return render_to_response('game.html', locals())
 
 
@@ -113,6 +122,7 @@ def _get_points_change(previous_result, new_result, play_white):
 
 @csrf_protect
 @transaction.commit_on_success
+@permission_required('tournament.enter_game_results', raise_exception=True)
 def game_set_result_view(request, tournament_id, game_id, result):
     game = Game.objects.get(id=game_id)
 

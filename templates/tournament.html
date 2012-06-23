@@ -19,10 +19,11 @@
         <p>
             <b>Date:</b> {{tournament.start_date}};
             <b>Type of tournament:</b> {{tournament.type}};
+            <b>Player Count:</b> {{players_count}};
             <b>Total Rounds:</b> {{max_rounds_count}};
         </p>
         <div>
-            {% if all_games_finished and not is_last_round %}
+            {% if can_tournament_toss %}
                 <button type="button"
                         class="btn btn-large btn-success chtour-tounrnament-toss"
                         data-tournament-id="{{tournament.id}}">

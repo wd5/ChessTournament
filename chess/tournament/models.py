@@ -21,6 +21,13 @@ class Player(models.Model):
 
 
 class Tournament(models.Model):
+
+    class Meta:
+        permissions = (
+            ("create_rounds", "Can create rounds"),
+            ("enter_game_results", "Can enter game results"),
+        )
+
     TOURNAMENT_TYPE = (
         ('Swiss-system', 'Swiss-system'),
     )

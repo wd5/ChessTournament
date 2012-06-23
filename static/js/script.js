@@ -4,6 +4,16 @@ $(function () {
         window.location = '/tournaments/' + tournamentId;
     });
 
+    function message (message, messageClass) {
+        $('.chtour-message-container').empty().append(
+            '<div class="alert fade in">' +
+                '<button class="close" data-dismiss="alert" type="button">×</button>' +
+                message +
+            '</div>'
+        );
+
+    }
+
     $('.chtour-tounrnament-toss').live('click', function () {
         var tournamentId = $(this).data('tournament-id');
         $.ajax({
@@ -16,6 +26,11 @@ $(function () {
             },
             success: function (content) {
                 window.location.reload();
+            },
+            statusCode: {
+                403: function () {
+                    message('Access denied.');
+                }
             }
         });
     });
@@ -54,6 +69,11 @@ $(function () {
             error: function () {
                 buttons.removeClass('btn-success').removeClass('disabled');
                 previousButton.addClass('btn-success');
+            },
+            statusCode: {
+                403: function () {
+                    message('Access denied.');
+                }
             }
         });
     });
