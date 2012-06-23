@@ -25,17 +25,17 @@
             <div>
                 <button type="button"
                         class="btn btn-large {% if game.result == '1:0' %} btn-success{% endif %} chtour-game-result chtour-game-white-win"
-                        data-game-id="{{game.id}}" data-game-result="1:0">
+                        data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="1:0">
                     1:0
                 </button>
                 <button type="button"
                         class="btn btn-large {% if game.result == '0.5:0.5' %} btn-success{% endif %} chtour-game-result chtour-game-dead-heat"
-                        data-game-id="{{game.id}}" data-game-result="0.5:0.5">
+                        data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="0.5:0.5">
                     0.5:0.5
                 </button>
                 <button type="button"
                         class="btn btn-large {% if game.result == '0:1' %} btn-success{% endif %} chtour-game-result chtour-game-black-win"
-                        data-game-id="{{game.id}}" data-game-result="0:1">
+                        data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="0:1">
                     0:1
                 </button>
             </div>

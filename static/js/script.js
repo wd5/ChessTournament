@@ -10,10 +10,12 @@ $(function () {
             cache: true,
             dataType: "html",
             url: '/tournaments/' + tournamentId + '/toss',
+            type: 'POST',
+            beforeSend: function (jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+            },
             success: function (content) {
-                $('.chtour-content').empty().append(content);
-                $('header .chtour-tounrnaments').parent().siblings().removeClass('active');
-                $('header .chtour-tounrnaments').parent().addClass('active');
+                window.location.reload();
             }
         });
     });
@@ -29,6 +31,7 @@ $(function () {
         if (currentButton.hasClass('disabled') || currentButton.hasClass('btn-success')) {
             return;
         }
+        var tournamentId = currentButton.data('tournament-id');
         var gameId = currentButton.data('game-id');
         var gameResult = currentButton.data('game-result');
         var buttons = currentButton.parent().children('.chtour-game-result');
@@ -40,9 +43,13 @@ $(function () {
         $.ajax({
             cache: false,
             dataType: 'html',
-            url: '/games/' + gameId + '/set-result/' + gameResult,
+            url: '/tournaments/' + tournamentId + '/' + gameId + '/' + gameResult,
+            type: 'POST',
+            beforeSend: function (jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+            },
             success: function () {
-                buttons.removeClass('disabled');
+                window.location.reload();
             },
             error: function () {
                 buttons.removeClass('btn-success').removeClass('disabled');

@@ -53,7 +53,7 @@
                     <ul class="nav">
                         <li{% if '/' == request.path %} class="active"{% endif %}><a class="chtour-home" href="/">Home</a></li>
                         <li{% if '/tournaments' in request.path %} class="active"{% endif %}><a class="chtour-tounrnaments" href="/tournaments">Tournaments</a></li>
-                        <li{% if '/players' == request.path %} class="active"{% endif %}><a class="chtour-players" href="/players">Players</a></li>
+                        <li{% if '/players' in request.path %} class="active"{% endif %}><a class="chtour-players" href="/players">Players</a></li>
                     </ul>
                     <ul class="nav pull-right chtour-permission{% if request.user.id %} chtour-logged{% endif %}{% if request.user.is_staff %} chtour-logged-staff{% endif %}">
                         <li><a class="chtour-managment" href="/admin/">Management</a></li>
@@ -81,6 +81,7 @@
     <!-- JavaScript at the bottom for fast page loading -->
     <script src="/static/js/libs/jquery-1.7.1.min.js"></script>
     <script src="/static/js/libs/jquery.form.js"></script>
+    <script src="/static/js/libs/jquery.cookie.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     <script src="/static/js/plugins.js"></script>
     <script src="/static/js/script.js"></script>

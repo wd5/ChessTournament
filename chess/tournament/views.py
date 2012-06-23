@@ -2,9 +2,11 @@ import datetime
 from operator import attrgetter
 from chess.tournament.elo_rank import get_rank_change
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from chess.tournament.models import Tournament, Player, Round, Game, TournamentResult
 from chess.tournament.swiss_system import get_games_pairs, get_rounds_count, get_players_position_comparator
+from django.views.decorators.csrf import csrf_protect
 
 
 def home_view(request):
@@ -39,6 +41,7 @@ def tournament_view(request, tournament_id):
     return render_to_response('tournament.html', locals())
 
 
+@csrf_protect
 @transaction.commit_on_success
 def tournament_toss_view(request, tournament_id):
     tournament = Tournament.objects.get(id=tournament_id)
@@ -81,21 +84,7 @@ def tournament_toss_view(request, tournament_id):
                 tournament_result.points += 1
                 tournament_result.save()
 
-    # sort results
-    players_position_comparator = get_players_position_comparator(tournament_results, tournament_games)
-    tournament_results = sorted(tournament_results,
-        key=attrgetter('player'),
-        cmp=players_position_comparator,
-        reverse=True)
-
-    # render response
-    is_last_round = round_number >= max_rounds_count
-    all_games_finished = True
-    for game in tournament.get_all_games_in_tournament():
-        if game.result == 'vs':
-            all_games_finished = False
-            break
-    return render_to_response('tournament.html', locals())
+    return HttpResponse()
 
 
 def game_view(request, tournament_id, game_id):
@@ -122,8 +111,9 @@ def _get_points_change(previous_result, new_result, play_white):
     return change
 
 
+@csrf_protect
 @transaction.commit_on_success
-def game_set_result_view(request, game_id, result):
+def game_set_result_view(request, tournament_id, game_id, result):
     game = Game.objects.get(id=game_id)
 
     # save game result
@@ -171,7 +161,7 @@ def game_set_result_view(request, game_id, result):
             tournament_result.points += _get_points_change(previous_result, result, False)
             tournament_result.save()
 
-    return render_to_response('game.html', locals())
+    return HttpResponse()
 
 
 def players_view(request):
