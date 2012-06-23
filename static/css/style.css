@@ -4743,7 +4743,7 @@ body {
   text-align: left;
 }
 .table .chtour-game-result {
-  width: 40px;
+  width: 60px;
   min-width: 60px;
   text-align: center;
 }
@@ -4751,6 +4751,12 @@ body {
   width: 100px;
   min-width: 100px;
   text-align: center;
+}
+@media (max-width: 767px) {
+  table .chtour-game-result {
+    width: 40px !important;
+    min-width: 40px !important;
+  }
 }
 @media (min-width: 270px) {
   .modal {
