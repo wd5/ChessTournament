@@ -4705,8 +4705,11 @@ body {
   margin: 0 -5px;
   padding: 3px;
 }
-.chtour-tournament-result-win {
-  box-shadow: 0 0 1px 1px #ffd700, 0 0 2px 2px #ffd700 inset;
+.table-striped tbody tr.chtour-tournament-result-win:nth-child(2n+1) th {
+  background-color: rgba(255, 215, 0, 0.5);
+}
+.table-striped tbody tr.chtour-tournament-result-win:nth-child(2n) th {
+  background-color: rgba(255, 231, 102, 0.5);
 }
 .table tr {
   cursor: pointer;

@@ -99,8 +99,17 @@ body {
     padding: 3px;
 }
 
-.chtour-tournament-result-win {
-    box-shadow: 0 0 1px 1px #ffd700, 0 0 2px 2px #ffd700 inset;
+ tr:nth-child(2n+1) td {
+    //border: 2px solid #ffd700 !important;
+
+}
+
+.table-striped tbody tr.chtour-tournament-result-win:nth-child(2n+1)  th {
+    background-color: fade(#ffd700, 50%);
+}
+
+.table-striped tbody tr.chtour-tournament-result-win:nth-child(2n)  th {
+    background-color: lighten(fade(#ffd700, 50%), 20%);
 }
 
 // Table items fields styles
