@@ -203,6 +203,111 @@ class SwissSystemTest(TestCase):
         self.assertTrue(game_pairs[1][0] == player4 or game_pairs[1][1] == player4)
         self.assertEqual(player5, auto_win_player)
 
+    def test_duplicate_games(self):
+        player1 = create_player(1, 'player1', 2400)
+        player2 = create_player(2, 'player2', 2200)
+        player3 = create_player(3, 'player3', 2000)
+        player4 = create_player(4, 'player4', 1800)
+        player5 = create_player(5, 'player5', 1600)
+        player6 = create_player(6, '[layer6', 1400)
+        results = [create_tournament_result(1, player1, 0),
+                   create_tournament_result(1, player2, 0),
+                   create_tournament_result(1, player3, 0),
+                   create_tournament_result(1, player4, 0),
+                   create_tournament_result(1, player5, 0),
+                   create_tournament_result(1, player6, 0),]
+
+        index = 0
+        games = []
+        game_pairs1, auto_win_player = get_games_pairs(results, games)
+        for game_pair in game_pairs1:
+            index += 1
+            games.append(create_game(index, game_pair[0], game_pair[1]))
+        filter(lambda result: result.player == game_pairs1[0][0], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs1[1][0], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs1[2][0], results)[0].points += 1
+
+        game_pairs2, auto_win_player = get_games_pairs(results, games)
+        for game_pair in game_pairs2:
+            index += 1
+            games.append(create_game(index, game_pair[0], game_pair[1]))
+        filter(lambda result: result.player == game_pairs2[0][1], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs2[1][0], results)[0].points += 0.5
+        filter(lambda result: result.player == game_pairs2[1][1], results)[0].points += 0.5
+        filter(lambda result: result.player == game_pairs2[2][0], results)[0].points += 1
+
+        game_pairs3, auto_win_player = get_games_pairs(results, games)
+        for game_pair in game_pairs3:
+            index += 1
+            games.append(create_game(index, game_pair[0], game_pair[1]))
+
+        for game1 in games:
+            for game2 in games:
+                if game1 == game2:
+                    continue
+                self.assertFalse(game1.playing_white_player == game2.playing_white_player and
+                                 game1.playing_black_player == game2.playing_black_player)
+                self.assertFalse(game1.playing_white_player == game2.playing_black_player and
+                                 game1.playing_black_player == game2.playing_white_player)
+
+    def test_repeated_colours_games(self):
+        player1 = create_player(1, 'player1', 2400)
+        player2 = create_player(2, 'player2', 2200)
+        player3 = create_player(3, 'player3', 2000)
+        player4 = create_player(4, 'player4', 1800)
+        player5 = create_player(5, 'player5', 1600)
+        player6 = create_player(6, '[layer6', 1400)
+        results = [create_tournament_result(1, player1, 0),
+                   create_tournament_result(1, player2, 0),
+                   create_tournament_result(1, player3, 0),
+                   create_tournament_result(1, player4, 0),
+                   create_tournament_result(1, player5, 0),
+                   create_tournament_result(1, player6, 0),]
+
+        index = 0
+        games = []
+        game_pairs1, auto_win_player = get_games_pairs(results, games)
+
+        self.assertEqual(player1, game_pairs1[0][0])
+        self.assertEqual(player4, game_pairs1[0][1])
+        self.assertEqual(player2, game_pairs1[1][0])
+        self.assertEqual(player5, game_pairs1[1][1])
+        self.assertEqual(player3, game_pairs1[2][0])
+        self.assertEqual(player6, game_pairs1[2][1])
+
+        for game_pair in game_pairs1:
+            index += 1
+            games.append(create_game(index, game_pair[0], game_pair[1]))
+        filter(lambda result: result.player == game_pairs1[0][0], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs1[1][0], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs1[2][0], results)[0].points += 1
+
+        game_pairs2, auto_win_player = get_games_pairs(results, games)
+
+        self.assertEqual(player1, game_pairs2[0][0])
+        self.assertEqual(player2, game_pairs2[0][1])
+        self.assertEqual(player5, game_pairs2[1][0])
+        self.assertEqual(player3, game_pairs2[1][1])
+        self.assertEqual(player4, game_pairs2[2][0])
+        self.assertEqual(player6, game_pairs2[2][1])
+
+        for game_pair in game_pairs2:
+            index += 1
+            games.append(create_game(index, game_pair[0], game_pair[1]))
+        filter(lambda result: result.player == game_pairs2[0][1], results)[0].points += 1
+        filter(lambda result: result.player == game_pairs2[1][0], results)[0].points += 0.5
+        filter(lambda result: result.player == game_pairs2[1][1], results)[0].points += 0.5
+        filter(lambda result: result.player == game_pairs2[2][0], results)[0].points += 1
+
+        game_pairs3, auto_win_player = get_games_pairs(results, games)
+
+        self.assertEqual(player2, game_pairs3[0][0])
+        self.assertEqual(player4, game_pairs3[0][1])
+        self.assertEqual(player3, game_pairs3[1][0])
+        self.assertEqual(player1, game_pairs3[1][1])
+        self.assertEqual(player6, game_pairs3[2][0])
+        self.assertEqual(player5, game_pairs3[2][1])
+
 
 class EloRankTest(TestCase):
 
