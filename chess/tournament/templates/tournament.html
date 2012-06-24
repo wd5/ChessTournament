@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 
 {% block breadcrumb %}
     <ul class="breadcrumb">
         <li>
-            <a class="chtour-tounrnaments" href="/tournaments">Tournaments</a>
+            <a class="chtour-tounrnaments" href="/tournaments">{% blocktrans %}Tournaments{% endblocktrans %}</a>
             <span class="divider">/</span>
         </li>
         <li class="active">
@@ -17,22 +18,22 @@
     <div class="chtour-content container chtour-table-view">
         <h1>{{tournament.name}}</h1>
         <p>
-            <b>Date:</b> {{tournament.start_date}};
-            <b>Type of tournament:</b> {{tournament.type}};
-            <b>Player Count:</b> {{players_count}};
-            <b>Total Rounds:</b> {{max_rounds_count}};
-            <b>Winning Places:</b> {{tournament.winning_places}};
+            <b>{% blocktrans %}Date{% endblocktrans %}:</b> {{tournament.start_date}};
+            <b>{% blocktrans %}Type of tournament{% endblocktrans %}:</b> {{tournament.type}};
+            <b>{% blocktrans %}Players Count{% endblocktrans %}:</b> {{players_count}};
+            <b>{% blocktrans %}Total Rounds{% endblocktrans %}:</b> {{max_rounds_count}};
+            <b>{% blocktrans %}Winning Places{% endblocktrans %}:</b> {{tournament.winning_places}};
         </p>
         <div>
             {% if can_tournament_toss %}
                 <button type="button"
                         class="btn btn-large btn-success chtour-tounrnament-toss"
                         data-tournament-id="{{tournament.id}}">
-                    Toss
+                    {% blocktrans %}Toss{% endblocktrans %}
                 </button>
             {% endif %}
             {% if tournament_results %}
-                <h3 class="chtour-undercrossed-header">Tournament Results</h3>
+                <h3 class="chtour-undercrossed-header">{% blocktrans %}Tournament Results{% endblocktrans %}</h3>
                 <table class="table table-striped">
                     {% for result in tournament_results %}
                         <tr class="chtour-tournament-result{% if tournament_finished and forloop.counter <= tournament.winning_places %} chtour-tournament-result-win{% endif %}">
@@ -44,7 +45,7 @@
                 </table>
             {% endif %}
             {% for round in tournament.rounds %}
-                <h3 class="chtour-undercrossed-header">Round {{round.number}}</h3>
+                <h3 class="chtour-undercrossed-header">{% blocktrans %}Round{% endblocktrans %} {{round.number}}</h3>
                 <table class="table table-striped">
                     <tbody>
                         {% for game in round.games %}
@@ -63,7 +64,7 @@
                             <tr class="chtour-tournament-auto-win">
                                 <th class="chtour-no-small">{{round.games|length|add:1}}</th>
                                 <th class="chtour-game-player">{{round.auto_win_player}}</th>
-                                <th class="chtour-game-result">auto win</th>
+                                <th class="chtour-game-result">{% blocktrans %}auto win{% endblocktrans %}</th>
                                 <th class="chtour-game-player"></th>
                                 <th class="chtour-no-small hidden-phone"></th>
                             </tr>

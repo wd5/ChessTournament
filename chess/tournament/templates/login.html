@@ -1,7 +1,9 @@
+{% load i18n %}
+
 <div class="modal chtour-login-form">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Login</h3>
+        <h3>{% blocktrans %}Login{% endblocktrans %}</h3>
     </div>
     <div class="modal-body">
         <ul class="unstyled">
@@ -37,7 +39,7 @@
         </ul>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary chtour-login-button">Login</button>
+        <button type="button" class="btn" data-dismiss="modal">{% blocktrans %}Close{% endblocktrans %}</button>
+        <button type="button" class="btn btn-primary chtour-login-button">{% blocktrans %}Login{% endblocktrans %}</button>
     </div>
 </div>

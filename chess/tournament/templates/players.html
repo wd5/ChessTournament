@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 
 {% block breadcrumb %}
     <ul class="breadcrumb">
         <li class="active">
-            <a class="chtour-players" href="/players">Players</a>
+            <a class="chtour-players" href="/players">{% blocktrans %}Players{% endblocktrans %}</a>
         </li>
     </ul>
 {% endblock %}
@@ -12,7 +13,7 @@
 
 {% block content %}
     <div class="chtour-content container chtour-table-view">
-        <h1 class="chtour-undercrossed-header">Players</h1>
+        <h1 class="chtour-undercrossed-header">{% blocktrans %}Players{% endblocktrans %}</h1>
         <div>
             <table class="table table-striped">
                 <tbody>

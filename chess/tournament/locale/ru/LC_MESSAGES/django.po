@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-24 23:28+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: templates/base.html:57 templates/home.html:16
+msgid "Chess Tournament"
+msgstr "Турнир по шахматам"
+
+#: templates/base.html:60 templates/home.html:8
+msgid "Home"
+msgstr "Начало"
+
+#: templates/base.html:61 templates/game.html:8 templates/tournament.html:8
+#: templates/tournaments.html:8 templates/tournaments.html.py:16
+msgid "Tournaments"
+msgstr "Турниры"
+
+#: templates/base.html:62 templates/players.html:8
+#: templates/players.html.py:16
+msgid "Players"
+msgstr "Игроки"
+
+#: templates/base.html:73
+msgid "Management"
+msgstr "Админка"
+
+#: templates/base.html:74
+msgid "Logout"
+msgstr "Выйти"
+
+#: templates/base.html:75 templates/login.html:6 templates/login.html.py:43
+msgid "Login"
+msgstr "Войти"
+
+#: templates/base.html:91
+msgid "Developed with python, gjango, jquery, twitter brootstrap"
+msgstr "Разработанно с помощью python, django, jquery, twitter bootstrap"
+
+#: templates/game.html:30
+msgid "1:0"
+msgstr ""
+
+#: templates/game.html:35
+msgid "0.5:0.5"
+msgstr ""
+
+#: templates/game.html:40
+msgid "0:1"
+msgstr ""
+
+#: templates/home.html:17
+msgid "This is test application about chess tournaments"
+msgstr "Это тестовое приложение о шахматных турнирах"
+
+#: templates/home.html:18
+#, fuzzy
+msgid "Developed with python, django, jquery, twitter bootstrap"
+msgstr "Разработанно с помощью python, django, jquery, twitter bootstrap"
+
+#: templates/home.html:19
+msgid "by Pavel Tyslyatsky"
+msgstr "Павлом Тысляцким"
+
+#: templates/login.html:42
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/tournament.html:21
+msgid "Date"
+msgstr "Дата"
+
+#: templates/tournament.html:22
+#, fuzzy
+msgid "Type of tournament"
+msgstr "Турниры"
+
+#: templates/tournament.html:23
+#, fuzzy
+msgid "Players Count"
+msgstr "Игроки"
+
+#: templates/tournament.html:24
+msgid "Total Rounds"
+msgstr "Всего раундов"
+
+#: templates/tournament.html:25
+msgid "Winning Places"
+msgstr "Победных мест"
+
+#: templates/tournament.html:32
+msgid "Toss"
+msgstr "Жеребьевка"
+
+#: templates/tournament.html:36
+#, fuzzy
+msgid "Tournament Results"
+msgstr "Турниры"
+
+#: templates/tournament.html:48
+msgid "Round"
+msgstr "Раунд"
+
+#: templates/tournament.html:67
+msgid "auto win"
+msgstr "авто победа"

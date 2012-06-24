@@ -1,3 +1,9 @@
+{% load static %}
+{% load i18n %}
+{% get_static_prefix as STATIC_URL %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -48,17 +54,38 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a href="/" class="brand">Chess Tournament</a>
+                <a href="/" class="brand">{% blocktrans %}Chess Tournament{% endblocktrans %}</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li{% if '/' == request.path %} class="active"{% endif %}><a class="chtour-home" href="/">Home</a></li>
-                        <li{% if '/tournaments' in request.path %} class="active"{% endif %}><a class="chtour-tounrnaments" href="/tournaments">Tournaments</a></li>
-                        <li{% if '/players' in request.path %} class="active"{% endif %}><a class="chtour-players" href="/players">Players</a></li>
+                        <li{% if '/' == request.path %} class="active"{% endif %}><a class="chtour-home" href="/">{% blocktrans %}Home{% endblocktrans %}</a></li>
+                        <li{% if '/tournaments' in request.path %} class="active"{% endif %}><a class="chtour-tounrnaments" href="/tournaments">{% blocktrans %}Tournaments{% endblocktrans %}</a></li>
+                        <li{% if '/players' in request.path %} class="active"{% endif %}><a class="chtour-players" href="/players">{% blocktrans %}Players{% endblocktrans %}</a></li>
                     </ul>
                     <ul class="nav pull-right chtour-permission{% if request.user.id %} chtour-logged{% endif %}{% if request.user.is_staff %} chtour-logged-staff{% endif %}">
-                        <li><a class="chtour-managment" href="/admin/">Management</a></li>
-                        <li><a class="chtour-logout" href="/accounts/logout/">Logout</a></li>
-                        <li><a class="chtour-login" href="/accounts/login/">Login</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {% for lang in LANGUAGES %}
+                                    {% if LANGUAGE_CODE == lang.0 %}{{ lang.1 }}{% endif %}
+                                {% endfor %}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for lang in LANGUAGES %}
+                                    <li>
+                                        <a class="chtour-change-language" data-language="{{lang.0}}">{{lang.1}}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+{#                            <select name="language">#}
+{#                                {% for lang in LANGUAGES %}#}
+{#                                    <option{% if LANGUAGE_CODE == lang.0 %} selected{% endif %} value="{{ lang.0 }}">{{ lang.1 }}</option>#}
+{#                                {% endfor %}#}
+{#                            </select>#}
+{#                            <div class="chtour-change-language-arrow"><div></div></div>#}
+                        </li>
+                        <li><a class="chtour-managment" href="/admin/">{% blocktrans %}Management{% endblocktrans %}</a></li>
+                        <li><a class="chtour-logout" href="/accounts/logout/">{% blocktrans %}Logout{% endblocktrans %}</a></li>
+                        <li><a class="chtour-login" href="/accounts/login/">{% blocktrans %}Login{% endblocktrans %}</a></li>
                     </ul>
                 </div>
             </div>
@@ -74,17 +101,17 @@
     <footer class="navbar navbar-fixed-bottom">
         <div class="navbar-inner">
             <div class="container chtour-footer">
-                <p>Developed with python, gjango, jquery, twitter brootstrap</p>
+                <p>{% blocktrans %}Developed with python, gjango, jquery, twitter brootstrap{% endblocktrans %}</p>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript at the bottom for fast page loading -->
-    <script src="/static/js/libs/jquery-1.7.1.min.js"></script>
-    <script src="/static/js/libs/jquery.form.js"></script>
-    <script src="/static/js/libs/jquery.cookie.js"></script>
-    <script src="/static/js/jquery.bootstrap.js"></script>
-    <script src="/static/js/plugins.js"></script>
-    <script src="/static/js/script.js"></script>
+    <script src="{{STATIC_URL}}js/libs/jquery-1.7.1.min.js"></script>
+    <script src="{{STATIC_URL}}js/libs/jquery.form.js"></script>
+    <script src="{{STATIC_URL}}js/libs/jquery.cookie.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/plugins.js"></script>
+    <script src="{{STATIC_URL}}js/script.js"></script>
 </body>
 </html>

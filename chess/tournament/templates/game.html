@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 
 {% block breadcrumb %}
     <ul class="breadcrumb">
         <li>
-            <a class="chtour-tounrnaments" href="#tournaments">Tournaments</a>
+            <a class="chtour-tounrnaments" href="/tournaments">{% blocktrans %}Tournaments{% endblocktrans %}</a>
             <span class="divider">/</span>
         </li>
         <li>
@@ -26,17 +27,17 @@
                 <button type="button"
                         class="btn btn-large {% if game.result == '1:0' %} btn-success{% endif %} chtour-game-result chtour-game-white-win"
                         data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="1:0">
-                    1:0
+                    {% blocktrans %}1:0{% endblocktrans %}
                 </button>
                 <button type="button"
                         class="btn btn-large {% if game.result == '0.5:0.5' %} btn-success{% endif %} chtour-game-result chtour-game-dead-heat"
                         data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="0.5:0.5">
-                    0.5:0.5
+                    {% blocktrans %}0.5:0.5{% endblocktrans %}
                 </button>
                 <button type="button"
                         class="btn btn-large {% if game.result == '0:1' %} btn-success{% endif %} chtour-game-result chtour-game-black-win"
                         data-tournament-id="{{tournament.id}}" data-game-id="{{game.id}}" data-game-result="0:1">
-                    0:1
+                    {% blocktrans %}0:1{% endblocktrans %}
                 </button>
             </div>
         {% else %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="active">
+            <a class="chtour-home" href="/">{% blocktrans %}Home{% endblocktrans %}</a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+{% block content %}
+    <div class="chtour-content">
+        <h1>{% blocktrans %}Chess Tournament{% endblocktrans %}</h1>
+        <p>{% blocktrans %}This is test application about chess tournaments{% endblocktrans %}</p>
+        <p>{% blocktrans %}Developed with python, django, jquery, twitter bootstrap{% endblocktrans %}</p>
+        <p>{% blocktrans %}by Pavel Tyslyatsky{% endblocktrans %}</p>
+    </div>
+{% endblock %}

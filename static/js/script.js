@@ -123,4 +123,25 @@ $(function () {
         });
         return false;
     });
+
+    $('.chtour-change-language').click(function () {
+        $.ajax({
+            cache: true,
+            dataType: 'html',
+            url: '/i18n/setlang/',
+            type: 'POST',
+            data: {
+                language: $(this).data('language')
+            },
+            beforeSend: function (jqXHR) {
+                jqXHR.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'));
+            },
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                message('Can\'t change language.');
+            }
+        })
+    });
 });
