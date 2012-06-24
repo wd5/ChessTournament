@@ -79,17 +79,21 @@ def _check_duplicate_game(game1_player1, game1_player2, tournament_games):
     return False
 
 def _duplicate_game_resolver(new_round_games, auto_win_player, tournament_games):
+    '''analise old games and switch new games players pairs who played before'''
     for index, new_game in enumerate(new_round_games):
+        # check previous games to duplicate
         duplicate = _check_duplicate_game(new_game[0], new_game[1], tournament_games)
 
         index_offset = 0
         while duplicate:
+            # get game offset to switch player (second player)
             index_offset = -index_offset - 1 if index_offset >=0 else -index_offset
             if index + index_offset < 0 or index + index_offset >= len(new_round_games):
                 if fabs(index_offset) > len(new_round_games) - index:
                     break
                 continue
 
+            # check previous games to duplicate and change players
             change_game = new_round_games[index + index_offset]
             if not _check_duplicate_game(change_game[0], new_game[1], tournament_games) and\
                not _check_duplicate_game(new_game[0], change_game[1], tournament_games):
@@ -99,7 +103,10 @@ def _duplicate_game_resolver(new_round_games, auto_win_player, tournament_games)
     return new_round_games, auto_win_player
 
 def _colour_game_resolver(new_round_games, auto_win_player, tournament_games):
+    '''analise old games and switch new games players colours if need'''
     players_colours = {}
+
+    # collect player games colours statistic
     for game in tournament_games:
         if game.playing_white_player.id not in players_colours:
             players_colours[game.playing_white_player.id] = [0, 0]
@@ -109,12 +116,14 @@ def _colour_game_resolver(new_round_games, auto_win_player, tournament_games):
         players_colours[game.playing_white_player.id][0] += 1
         players_colours[game.playing_black_player.id][1] += 1
 
+    # check and switch colours in games
     for new_game in new_round_games:
         if new_game[0].id not in players_colours:
             players_colours[new_game[0].id] = [0, 0]
         if new_game[1].id not in players_colours:
             players_colours[new_game[1].id] = [0, 0]
 
+        # get players games colours counts
         player1_white = players_colours[new_game[0].id][0]
         player1_black = players_colours[new_game[0].id][1]
         player2_white = players_colours[new_game[1].id][0]
@@ -122,6 +131,7 @@ def _colour_game_resolver(new_round_games, auto_win_player, tournament_games):
         delta_player1 = player1_white - player1_black
         delta_player2 = player2_white - player2_black
 
+        # check is need change colour and switch colour
         if (fabs(delta_player1) > fabs(delta_player2) and delta_player1 > 0) or\
            (fabs(delta_player1) < fabs(delta_player2) and delta_player2 < 0) or\
            (fabs(delta_player1) == fabs(delta_player2) and (
@@ -138,8 +148,11 @@ def _colour_game_resolver(new_round_games, auto_win_player, tournament_games):
     return new_round_games, auto_win_player
 
 def get_games_pairs(tournament_results, tournament_games):
+    '''analise old games and generate new games pairs'''
     games = []
     auto_win_player = None
+
+    # get points groups
     point_groups = {}
     for tournament_result in tournament_results:
         if tournament_result.points not in point_groups:
@@ -149,8 +162,11 @@ def get_games_pairs(tournament_results, tournament_games):
     point_groups_seq = sorted(point_groups.keys(), reverse=True)
     players_position_comparator = get_players_position_comparator(tournament_results, tournament_games)
     for i, points in enumerate(point_groups_seq):
+        # get players group and sort them
         players = [point_group.player for point_group in point_groups[points]]
         players.sort(cmp=players_position_comparator, reverse=True)
+
+        # move last odd player in group to next group or set auto win player if this group last
         if len(players) % 2 == 1:
             if i + 1 < len(point_groups_seq):
                 points_in_next_groups = point_groups_seq[i + 1]
@@ -158,6 +174,8 @@ def get_games_pairs(tournament_results, tournament_games):
                 point_groups[points_in_next_groups].insert(0, tournament_result)
             else:
                 auto_win_player = players.pop()
+
+        # create games pairs
         half_point_group = len(players) / 2
         for i in xrange(half_point_group):
             games.append([players[i], players[i + half_point_group],])
